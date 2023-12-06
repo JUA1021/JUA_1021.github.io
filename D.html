@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-size: 14px;
+            width: 100%;
+            height: 600px;
+            background-color: black;
+            background-image: url('img/backg4.png');
+            background-repeat: no-repeat;
+            background-position: top center;
+            line-height: 1.5;
+        }
+
+        li {
+            list-style-type: none;
+        }
+
+        header {
+            width: 1000px;
+            height: 100px;
+            margin: 0 auto;
+        }
+
+        #logo {
+            float: left;
+            margin: 40px 0 0 20px;
+        }
+
+        #nav {
+            margin-top: 40px;
+            font-family: '맑은고딕';
+            font-size: 16px;
+            color: rgb(255, 255, 255);
+            float: right;
+        }
+
+        #nav li {
+            display: inline;
+            margin-left: 50px;
+            font-weight: lighter;
+        }
+
+        #nav li a {
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+        }
+
+        #nav a:hover {
+            color: rgb(255, 255, 255);
+            text-shadow: 0px 0px 5px rgb(255, 255, 255);
+            font-weight: bold;
+        }
+
+        #nav .hh {
+            color: rgb(255, 255, 255);
+            text-shadow: 0px 0px 5px rgb(255, 255, 255);
+            font-weight: bold;
+        }
+
+        #aside {
+            width: 1300px;
+            height: 200px;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 17px;
+            text-align: center;
+            margin-top: 550px;
+        }
+
+        #aside2 {
+            text-align: center;
+            width: 1300px;
+            height: 200px;
+            color: white;
+            font-size: 60px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #aside3 {
+          text-align: center;
+            width: 1000px;
+            height: 100px;
+            color: white;
+            font-size: 30px;
+            font-family:Arial, Helvetica, sans-serif;
+            font-size: 60px;
+            margin-top: 220px;
+            margin-bottom: 50px;
+            font-weight: bold;
+            line-height: 1.0;
+           
+        }
+
+        #section {
+            text-align: center;
+            width: 1300px;
+            height: 500px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+            margin-top: 50px;
+            position: relative;
+            background-image: url('img/backback.png');
+            background-repeat: no-repeat;
+            background-position: top center;
+           
+        }
+      
+    #section img {
+        width: 200px; 
+        transition: transform 0.3s ease;
+    }
+
+    #section img:hover {
+        transform: scale(1.04); 
+    }
+    #section {
+        text-align: center;
+    }
+
+    .item-container {
+        display: inline-block;
+        text-align: center;
+        margin: 20px;
+    }
+
+    .item-container img {
+        width: 100%;
+    }
+
+       
+
+        section {
+            width: 1300px;
+            margin: 0 auto;
+        }
+
+        #main {
+           
+            margin-bottom: 200px;
+        }
+
+       
+        footer {
+            height: 200px;
+            margin-top: 50px;
+            margin: 0 auto;
+            background-color: rgb(19, 19, 19);
+        }
+
+        #address {
+            width: 400px;
+            float: left;
+            margin-left: 120px;
+            margin-top: 50px;
+        }
+
+        #customer {
+            width: 300px;
+            float: right;
+            margin-top: 70px;
+        }
+    </style>
+    
+    <title>탐사선</title>
+</head>
+
+<body>
+    <header>
+        <div id="logo"> <a href="index.html"> <img src='img/ASTROI.png' width="150px"> </a> </div>
+        <div id="nav">
+            <li> <a href="A.html">위치</a></li>
+            <li> <a href="B.html">유래</a> </li>
+            <li> <a href="C.html">루머</a> </li>
+            <li> <a href="D.html" class="hh">탐사선</a> </li>
+            <li> <a href="E.html">관련영화</a> </li>
+        </div>
+    </header>
+    <section>
+        <section id="aside3">
+        a picture of Mars <br> <span style="font-size: 25px;"><b>탐사선이 담은 사진</b></span>
+        </section>
+        <section id="aside">
+            <span style="font-size: 40px;"><b>Mars Exploration</b></span><br>
+            <span style="font-size: 30px;">화성을 담다</span><br><br>
+            신비로운 탐험, 화성의 신비에 푹 빠져보세요 <br>
+        </section>
+        <section id="section">
+            <div class="item-container">
+                
+                <img src='img/card1.png' width="300px">
+              <p>퍼시버런스</p>
+                   </div> 
+               <div class="item-container">
+            
+            
+                <img src='img/card2.png' width="300px">
+                <p>큐리오시티</p>
+            </div>
+                <div class="item-container">
+          
+        
+                <img src='img/card3.png' width="300px">
+               <p>인사이트</p>
+            </div>
+            
+        </section>
+
+        <section id="aside3">
+            <span style="font-size: 40px;"><b> Mars Captured by a Probe</b></span><br>
+            <span style="font-size: 20px;">탐사선을 통해 담아낸 화성의 아름다움</span><br><br>
+            
+        </section>
+
+        <div class="clear"> </div>
+
+        <section id="aside2">
+            <img src='img/1.png' width="300px">
+                <img src='img/2.png' width="300px">
+                <img src='img/3.png' width="300px">
+            </section>
+            <div class="clear"> </div>
+
+        <section id="aside2">
+            <img src='img/4.png' width="300px">
+                <img src='img/5.png' width="300px">
+                <img src='img/6.png' width="300px">
+            </section>
+            <div class="clear"> </div>
+
+        <section id="aside2">
+            <img src='img/7.png' width="300px">
+                <img src='img/8.png' width="300px">
+                <img src='img/9.png' width="300px">
+            </section>
+            <div class="clear"> </div>
+
+        <section id="aside2">
+            <img src='img/10.png' width="300px">
+                <img src='img/11.png' width="300px">
+                <img src='img/12.png' width="300px">
+            </section>
+            <div class="clear"> </div>
+
+        <section id="aside2">
+            <img src='img/13.png' width="300px">
+                <img src='img/14.png' width="300px">
+                <img src='img/15.png' width="300px">
+            </section>
+            <section id="main"></section>
+    </section>
+    
+    
+    
+        
+    <div class="clear"> </div>
+    <footer>
+        <section id="address">
+            <a href="S.html"><img src="img/site.png" width="150px"></a>
+            <br><br><br>
+            <img src="img/footer.png" width="300px">
+        </section>
+        <section id="customer"> <img src="img/footera.png" width="150px"></section>
+    </footer>
+    <div class="clear"> </div>
+</body>
+
+</html>

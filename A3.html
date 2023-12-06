@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .clear { clear: both; } 
+        * { padding: 0; margin: 0; }
+
+        body {
+            font-size: 14px;
+            width: 100%;
+            height: 800px;
+            background-color: black;
+            background-image: url('img/backba.png');
+            background-repeat: no-repeat; 
+            background-position: top center; 
+            line-height: 1.5;
+        }
+
+        li { list-style-type: none; }
+
+        header {
+            width: 1000px;
+            height: 100px;
+            margin: 0 auto;
+        }
+
+        #logo {
+            float: left;
+            margin: 40px 0 0 20px;
+        }
+
+        #nav {
+            margin-top: 40px;
+            font-family: '맑은고딕';
+            font-size: 16px;
+            color: rgb(255, 255, 255);
+            float: right;
+        }
+
+        #nav li {
+            display: inline;
+            margin-left: 50px;
+            font-weight: lighter;
+        }
+
+        #nav li a {
+            color: rgb(255, 255, 255);
+            text-decoration: none;
+        }
+
+        #nav a:hover {
+            color: rgb(255, 255, 255);
+            text-shadow: 0px 0px 5px rgb(255, 255, 255);
+            font-weight: bold;
+        }
+
+        #nav .hh {
+            color: rgb(255, 255, 255);
+            text-shadow: 0px 0px 5px rgb(255, 255, 255);
+            font-weight: bold;
+        }
+
+        #aside {
+            float: left;
+            width: 550px;
+            height: 500px;
+            color: white;
+            
+            font-size: 15px;
+            
+            margin-top: 40px;
+        }
+
+       
+        #aside2 a{ text-decoration: none; color: white;}
+        #aside2 {
+            text-align: right;
+            width: 1000px;
+            height: 70px;
+            color: white;
+            font-size: 40px;
+            text-decoration: none; color: #ffffff;
+            margin-top: 60px;
+            font-weight: bold;
+            border-bottom: solid 1px #ffffff;
+        }
+
+        #aside3 {
+            text-align: left;
+            width: 350px;
+            height: 150px;
+            color: white;
+            font-size: 14px;
+            font-weight: lighter;
+            float: right;
+            margin-top: 60px;
+        }
+
+        #section {
+            float: right;
+            width: 500px;
+            height: 500px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+            margin-top: 170px;
+            
+        }
+
+        #section b {
+            font-size: 25px;
+        }
+        section{ width: 1000px;
+            
+            margin: 0 auto; }
+        #main {
+            text-align: center;
+            background-image: url('img/back4.png');
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-size: cover;
+            margin-bottom: 200px;
+        }
+
+        #main img {
+            width: 100%;
+        }
+
+        
+
+        footer {
+            height: 200px;
+            margin-top: 20px;
+            margin: 0 auto;
+            background-color: rgb(19, 19, 19);
+        }
+
+        #address {
+            width: 400px;
+            float: left;
+            margin-left: 120px;
+            margin-top: 50px;
+        }
+
+        #customer {
+            width: 300px;
+            float: right;
+            margin-top: 70px;
+        }
+    </style>
+    <title>라이프</title>
+</head>
+<body>
+    <header> 
+        <div id="logo"> <a href="index.html"> <img src='img/ASTROI.png' width="150px"> </a> </div>
+        <div id="nav"> 
+            <li> <a href="A.html">위치</a></li>
+            <li> <a href="B.html">유래</a> </li>
+            <li> <a href="C.html">루머</a> </li>
+            <li> <a href="D.html">탐사선</a> </li>
+            <li> <a href="E.html"class="hh">관련영화</a> </li>
+        </div>
+    </header>
+    <section>
+        <section id="aside2"> 
+            <a href="E.html#aside">X</a>
+        </section>
+       
+        <section id="aside"> 
+            <video width="600" controls autoplay loop> 
+                <source src="2.mp4" type=" video/mp4">
+               </video>
+            </section>
+            <section id="aside3"> 
+                <span style="font-size: 40px;"><b>라이프 [2017]</b></span><br><br>
+                인류 역사상 가장 위대한 발견을 한 6인의 우주인 화성에서 발견한 생명체의 등장에 지구 전체가 들뜨지만, 생명체가 움직이기 시작하자 위대한 발견은 곧 가장 위험한 존재가 된다. 순식간에 인류를 위협하는 지능과 능력을 지닌 존재로 진화한 생명체 70억 인류를 구하기 위해 6인의 우주인은 결국 목숨을 건 선택의 기로에 놓이게 된다.
+            </section>
+        </section>
+    </section>
+    <div class="clear"> </div>
+    <footer>
+        <section id="address"> 
+            <a href="S.html"><img src="img/site.png" width="150px"></a>
+            <br><br><br>
+            <img src="img/footer.png" width="300px">
+        </section>
+        <section id="customer"> <img src="img/footera.png" width="150px"></section>
+    </footer>
+    <div class="clear"> </div>
+</body>
+</html>
