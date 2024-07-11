@@ -1,166 +1,494 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>메인</title>
+    <title>Draggable Background</title>
     <style>
-        .clear {
-            clear: both
-        }
-
-        * {
-            padding: 0;
+        body, html {
             margin: 0;
+            padding: 0;
+            font-family: 'NanumSquare', sans-serif;
+            background-color: #0A0A0A;
+            overflow: hidden;
         }
 
-        body {
-            font-size: 14px;
+        img {
+            -webkit-user-drag: none;
+            user-select: none;
+        }
+        #container {
+            position: relative;
             width: 100%;
-            height: 700px;
-            background-image: url('img/back.jpg');
-            background-repeat: no-repeat;
-            background-position: top center;
-            background-color: black;
-            line-height: 1.5;
+            height: 100vh;
+            cursor: grab;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-
-        li {
-            list-style-type: none;
+        #video-background {
+            position: absolute;
+            width: 110%;
+            height: auto;
+            object-fit: cover;
+            z-index: 0;
         }
-
-        header {
-            width: 1000px;
-            height: 100px;
-            margin: 0 auto;
-        }
-
-        #logo {
-            float: left;
-            margin: 40px 0 0 20px;
-        }
-
-        #nav {
-            margin-top: 40px;
-            font-family: '맑은고딕';
-            font-size: 16px;
-            color: rgb(255, 255, 255);
-            float: right;
-        }
-
-        #nav li {
-            display: inline;
-            margin-left: 50px;
-            font-weight: lighter;
-        }
-
-        #nav li a {
-            color: rgb(255, 255, 255);
-            text-decoration: none;
-        }
-
-        #nav a:hover {
-            color: rgb(255, 255, 255);
-            text-shadow: 0px 0px 5px rgb(255, 255, 255);
-            font-weight: bold;
-        }
-
-        #nav .hh {
-            color: rgb(255, 255, 255);
-            text-shadow: 0px 0px 5px rgb(255, 255, 255);
-            font-weight: bold;
-        }
-
-        #aside {
-            width: 500px;
-            height: 500px;
-            color: white;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 20px;
-            margin-left: 120px;
-            margin-top: 200px;
-        }
-
-        #section {
-            text-align: center;
-        }
-
-        #section2 {
-            text-align: center;
+        #image-container {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 700px;
-            background-image: url('img/main2.png');
-            background-repeat: no-repeat;
-            background-position: top center;
-            background-size: cover;
-            margin-top: 50px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1;
         }
-
-        #section2 img {
-            margin-top: 320px;
+        .floating-img, .fixed-img, .additional-img {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
-        section{ width: 1300px;
-            
-            margin: 0 auto; }
-        footer {
-            height: 200px;
-            margin-top: 20px;
-            margin: 0 auto;
-            background-color: rgb(19, 19, 19);
+        .floating-img {
+            animation: float 2s ease-in-out infinite;
         }
-
-        #address {
+        .fixed-img {
             width: 400px;
-            float: left;
-            margin-left: 120px;
-            margin-top: 50px;
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(-100%);
+            }
+            50% {
+                transform: translateY(-120%);
+            }
+        }
+        .additional-img {
+            width: 40px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        #screenMovementText {
+            position: absolute;
+            top: 90%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        @keyframes moveSideways {
+            0% { transform: translateX(-50%); }
+            25% { transform: translateX(-150%); }
+            50% { transform: translateX(-50%); }
+            75% { transform: translateX(50%); }
+            100% { transform: translateX(-50%); }
+        }
+        .blinking {
+            animation: blink 1s ease-in-out 2;
+        }
+        .moving {
+            animation: moveSideways 3s ease-in-out 1;
+        }
+        .drifting {
+            animation: drift 6s ease-in-out infinite;
+        }
+        @keyframes drift {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(10px, -10px); }
+            100% { transform: translate(0, 0); }
+        }
+        .glow {
+            filter: drop-shadow(0 0 10px yellow);
+        }
+        #text {
+            position: relative;
+            color: transparent;
+            font-size: 40px;
+            margin-top: 20px;
+            transition: color 1s ease-in-out;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: white;
+        }
+        #text.filled {
+            background: linear-gradient(to right, white 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            animation: fillText 1s linear forwards;
+        }
+        #text.unfilled {
+            background: linear-gradient(to left, transparent 50%, white 50%);
+            background-size: 200% 100%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            animation: unfillText 1s linear forwards;
+            animation-fill-mode: forwards;
+        }
+        @keyframes fillText {
+            100% {
+                background-position: 100% 0;
+            }
+            100% {
+                background-position: 0% 0;
+            }
+        }
+        @keyframes unfillText {
+            100% {
+                background-position: 0% 0;
+            }
+            100% {
+                background-position: 100% 0;
+            }
+        }
+        .top-left-img {
+            width: 400px;
+            left: -300px;
+            animation: floatUpDown 3s ease-in-out infinite;
+        }
+        #a {
+            animation-delay: 0s;
+            top: 70px;
+        }
+        #a_1 {
+            animation-delay: 1s;
+            top: 10px; margin-left: 50px; margin-right: 50px; 
+        }
+        #a_2 {
+            animation-delay: 0s;
+            top: 30px;margin-right: 50px;
+        }
+        #a_3 {
+            animation-delay: 0s;
+            top: 190px; margin-left: 100px;
+        }
+    
+        #b {
+            animation-delay: 0s;
+            top: 600px;
+        }
+        #b_1 {
+            animation-delay: 1s;
+            top: 510px;margin-left: 50px; margin-right: 50px;
+        }
+        #b_2 {
+            animation-delay: 0s;
+            top: 530px;
+        }
+        #b_3 {
+            animation-delay: 0s;
+            top: 690px;margin-left: 100px;
+        }
+        .top-right-img {
+            width: 400px;
+            right: -300px;
+            animation: floatUpDown 3s ease-in-out infinite;
+        }
+        #c {
+            animation-delay: 0s;
+            top: 300px;
+        }
+        #c_5 {
+            animation-delay: 1s;
+            top: 150px;margin-left: 50px; margin-right: 50px;
+        }
+        #c_2 {
+            animation-delay: 0s;
+            top: 200px;margin-left: 400px;right: -450px;
+        }
+        #c_3 {
+            animation-delay: 0s;
+            top: 390px;margin-left: 100px;right: -150px;
+        }
+        
+        #c_4 {
+            animation-delay: 0s;
+            top: 430px; right: -500px;
+        }
+        #c_1 {
+            animation-delay: 1s;
+            top: 530px;margin-left: 100px;right: -250px;
         }
 
-        #customer {
-            width: 300px;
-            float: right;
-            margin-top: 70px;
+        .glow1 {
+            filter: drop-shadow(0 0 3px rgb(0, 229, 255));
         }
+
+        @keyframes floatUpDown {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        .hover-glow {
+            transition: filter 0.3s ease-in-out;
+        }
+        .hover-glow:hover {
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
+        }
+        .clickable-img {
+    cursor: pointer;
+}
     </style>
+
 </head>
-
 <body>
-    <header>
-        <div id="logo"> <a href="index.html"> <img src='./img/ASTROI.png' width="150px"> </a>
-        </div>
-        <div id="nav">
-            <li> <a href="A.html">위치</a></li>
-            <li> <a href="B.html">유래</a> </li>
-            <li> <a href="C.html">루머</a> </li>
-            <li> <a href="D.html">탐사선</a> </li>
-            <li> <a href="E.html">관련영화</a> </li>
-        </div>
-    </header>
-    <section>
-        <section id="aside">
-            <img src='./img/THE MARS.png' width="270px"> <br><br><br>
-            Beyond the Stars: Unveiling the Wonders of Space
-        </section>
-        <section id="section">
-            <img src='./img/main1.png' width="730px">
-        </section>
-        <div class="clear"> </div>
-    </section>
-    <section id="section2">
-        <a href="index.html"> <img src='./img/main3.png' width="130px"> </a>
-    </section>
 
-    <div class="clear"> </div>
-    <footer>
-        <div id="address">
-            <a href="S.html"><img src="./img/site.png" width="150px"></a>
-            <br><br><br>
-            <img src="./img/footer.png" width="300px">
+    <div id="container">
+        <video id="video-background" autoplay muted onended="showLogoAndText()">
+            <source src="img/start.mp4" type="video/mp4">
+        </video>
+        <div id="image-container">
+            <img id="logo" src="img/logo.png" style="opacity: 0; transition: opacity 1s ease-in-out;">
+            <div id="text" style="opacity: 0; transition: opacity 1s ease-in-out; font-size: 80px;">
+                <b>Digital Media Design</b>
+            </div>
+            <img id="img1" src="img/img_1.png" class="additional-img" style="top: 75%; left: 50%; transform: translateX(-50%);">
+            <img id="img0" src="img/img_0.png" class="additional-img" style="top: 78%; left: 50%; transform: translateX(-50%);">
+           
+            <img id="a_2" src="img/a_2.png" class="floating-img top-left-img">
+            <img id="a_1" src="img/a_1.png" class="floating-img top-left-img">
+            <img id="b_2" src="img/b_2.png" class="floating-img top-left-img">
+            <img id="b_1" src="img/b_1.png" class="floating-img top-left-img">
+            <img id="b" src="img/b.png" class="floating-img top-left-img">
+            <img id="a" src="img/a.png" class="floating-img top-left-img">
+
+            <a href="A.html">
+                <img id="a_3" src="img/a_3.png" class="floating-img top-left-img hover-glow">
+            </a>
+
+            <a href="B.html">
+                <img id="b_3" src="img/b_3.png" class="floating-img top-left-img hover-glow">
+            </a>
+
+            <img id="c_1" src="img/c_1.png" class="floating-img top-right-img glow1" style="width: 200px;">
+
+            <a href="C.html">
+                <img id="c" src="img/c.png" class="floating-img top-right-img hover-glow">
+            </a>
+            <img id="c_2" src="img/c_2.png" class="floating-img top-right-img glow1">
+            <img id="c_3" src="img/c_3.png" class="floating-img top-right-img glow1">
+            <img id="c_4" src="img/c_4.png" class="floating-img top-right-img ">
+            <img id="c_5" src="img/c_5.png" class="floating-img top-right-img ">
+          
+            <div id="screenMovementText">화면을 좌우로 움직이세요</div>
         </div>
-        <div id="customer"> <img src="./img/footera.png" width="150px"></div>
-    </footer>
-    <div class="clear"> </div>
+    </div>
+    
+    
+
+    <script>
+        const container = document.getElementById('container');
+        const imageContainer = document.getElementById('image-container');
+        const img0 = document.getElementById('img0');
+        const img1 = document.getElementById('img1');
+        const screenMovementText = document.getElementById('screenMovementText');
+        const textElement = document.getElementById('text');
+        let blinkInterval;
+        let videoEnded = false;
+    
+        function showLogoAndText() {
+            const logo = document.getElementById('logo');
+            const text = document.getElementById('text');
+            const floatingImages = document.querySelectorAll('.floating-img');
+    
+            logo.style.opacity = '1';
+            text.style.opacity = '1';
+            document.body.style.backgroundColor = '#0A0A0A';
+    
+            floatingImages.forEach(img => {
+                img.style.opacity = '1';
+            });
+    
+            setTimeout(() => {
+                img0.style.opacity = '1';
+                img1.style.opacity = '1';
+                screenMovementText.style.opacity = '1';
+                animateImg0();
+                addHoverEffect();
+            }, 2000);
+        }
+    
+        textElement.addEventListener('mouseover', () => {
+            textElement.classList.remove('unfilled');
+            textElement.classList.add('filled');
+        });
+    
+        textElement.addEventListener('mouseout', () => {
+            textElement.classList.remove('filled');
+            textElement.classList.add('unfilled');
+        });
+    
+        function animateImg0() {
+            img0.classList.add('blinking');
+            img0.addEventListener('animationend', () => {
+                img0.classList.remove('blinking');
+                img0.classList.add('moving');
+                img0.addEventListener('animationend', () => {
+                    img0.classList.remove('moving');
+                });
+            });
+        }
+    
+        container.addEventListener('mousedown', startMovingImages);
+        container.addEventListener('touchstart', startMovingImages);
+    
+        function startMovingImages(event) {
+            container.removeEventListener('mousedown', startMovingImages);
+            container.removeEventListener('touchstart', startMovingImages);
+    
+            let isDragging = false;
+            let startX, startY, initialPosX, initialPosY;
+    
+            startX = event.clientX || event.touches[0].clientX;
+            startY = event.clientY || event.touches[0].clientY;
+    
+            initialPosX = imageContainer.offsetLeft;
+            initialPosY = imageContainer.offsetTop;
+    
+            container.style.cursor = 'grabbing';
+            isDragging = true;
+    
+            function moveImages(event) {
+                if (isDragging) {
+                    const dx = (event.clientX || event.touches[0].clientX) - startX;
+                    const dy = (event.clientY || event.touches[0].clientY) - startY;
+    
+                    imageContainer.style.left = `${initialPosX + dx}px`;
+                    imageContainer.style.top = `${initialPosY + dy}px`;
+                }
+            }
+    
+            function stopMovingImages() {
+                isDragging = false;
+                container.style.cursor = 'grab';
+    
+                img0.style.opacity = '0';
+                img1.style.opacity = '0';
+                screenMovementText.style.opacity = '0';
+    
+                container.addEventListener('mousedown', startMovingImages);
+                container.addEventListener('touchstart', startMovingImages);
+            }
+    
+            container.addEventListener('mousemove', moveImages);
+            container.addEventListener('touchmove', moveImages);
+            container.addEventListener('mouseup', stopMovingImages);
+            container.addEventListener('touchend', stopMovingImages);
+        }
+    
+        function handleClick(event) {
+            if (!videoEnded) {
+                videoEnded = true;
+                const video = document.getElementById('video-background');
+                video.currentTime = video.duration;
+                showLogoAndText();
+            }
+        }
+    
+        document.getElementById('video-background').addEventListener('ended', () => {
+            videoEnded = true;
+            showLogoAndText();
+        });
+    
+        container.addEventListener('click', handleClick);
+    
+        const hoverImages = ['img/1.png', 'img/2.png', 'img/3.png', 'img/4.png'];
+    
+        function createFloatingImages() {
+            const positions = [
+                { width: '27.31px', top: '4.45062vh', left: '70.132vw' },
+                { width: '51.7491px', top: '76.7079vh', left: '100.02477vw' },
+                { width: '38.0433px', top: '300.9994vh', left: '8.77657vw' },
+                { width: '37.5408px', top: '4.1071vh', left: '80.3084vw' },
+                { width: '29.5113px', top: '56.2204vh', left: '84.3163vw' },
+                { width: '50.0057px', top: '8.78596vh', left: '14.4346vw' },
+                { width: '33.8661px', top: '78.4733vh', left: '17.3655vw' },
+                { width: '54.2852px', top: '38.3344vh', left: '32.1983vw' },
+                { width: '43.9476px', top: '83.623vh', left: '3.46332vw' },
+                { width: '49.3234px', top: '96.0208vh', left: '19.0581vw' },
+                { width: '40px', top: '-65.3656vh', left: '190.169vw' },
+                { width: '40px', top: '-62.9994vh', left: '52.802vw' },
+                { width: '40px', top: '32.1249vh', left: '-80.4402vw' },
+                { width: '40px', top: '-36.8176vh', left: '199.224vw' },
+                { width: '40px', top: '198.083vh', left: '198.647vw' },
+                { width: '40px', top: '-96.668vh', left: '-84.2253vw' },
+                { width: '40px', top: '152.707vh', left: '-27.0044vw' },
+                { width: '40px', top: '29.1982vh', left: '130.679vw' },
+                { width: '40px', top: '-80.8609vh', left: '151.282vw' },
+                { width: '40px', top: '-27.0428vh', left: '-15.1038vw' },
+                { width: '40px', top: '-76.8763vh', left: '37.1044vw' },
+                { width: '40px', top: '53.4092vh', left: '-47.3884vw' },
+                { width: '40px', top: '87.1637vh', left: '141.109vw' },
+                { width: '40px', top: '-4.64875vh', left: '84.578vw' },
+                { width: '40px', top: '-98.7022vh', left: '174.242vw' },
+                { width: '40px', top: '92.7012vh', left: '168.533vw' },
+                { width: '40px', top: '-1.93739vh', left: '112.109vw' },
+                { width: '40px', top: '-77.1076vh', left: '-85.3684vw' },
+                { width: '40px', top: '26.1252vh', left: '10.0953vw' },
+                { width: '40px', top: '125.192vh', left: '104.569vw' }
+            ];
+    
+            positions.forEach(pos => {
+                const img = document.createElement('img');
+                img.src = 'img/cc.png';
+                img.classList.add('floating-img', 'glow', 'clickable-img');
+                img.style.width = pos.width;
+                img.style.top = pos.top;
+                img.style.left = pos.left;
+    
+                img.addEventListener('mouseover', handleMouseOver);
+                img.addEventListener('mouseout', handleMouseOut);
+                img.addEventListener('click', handleImageClick);
+    
+                imageContainer.appendChild(img);
+            });
+        }
+    
+        function handleMouseOver(event) {
+            if (!event.target.dataset.fixed) {
+                const randomImage = hoverImages[Math.floor(Math.random() * hoverImages.length)];
+                event.target.src = randomImage;
+            }
+        }
+    
+        function handleMouseOut(event) {
+            if (!event.target.dataset.fixed) {
+                event.target.src = 'img/cc.png';
+            }
+        }
+    
+        function handleImageClick(event) {
+            const randomImage = hoverImages[Math.floor(Math.random() * hoverImages.length)];
+            event.target.src = randomImage;
+            event.target.dataset.fixed = 'true';
+            event.target.removeEventListener('mouseover', handleMouseOver);
+            event.target.removeEventListener('mouseout', handleMouseOut);
+        }
+    
+        function addHoverEffect() {
+            const hoverElements = document.querySelectorAll('.hover-glow');
+            hoverElements.forEach(element => {
+                element.addEventListener('mouseover', () => {
+                    element.style.filter = 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.8))';
+                });
+                element.addEventListener('mouseout', () => {
+                    element.style.filter = 'none';
+                });
+            });
+        }
+    
+        createFloatingImages();
+    </script>
 </body>
-
 </html>
