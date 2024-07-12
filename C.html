@@ -1,86 +1,320 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Media Wall</title>
-<style>
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100vh; /* 변경: 100vh로 설정 */
-    overflow: hidden; /* 변경: hidden으로 설정하여 스크롤 방지 */
-    font-family: Arial, sans-serif;
-}
-#video-container {
-    width: calc(100% - 40px);
-    margin: 0 auto;
-    padding-top: 20px;
-}
-video {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-#header {
-    width: calc(100% - 40px);
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8);
-    transition: all 0.5s ease;
-    box-sizing: border-box;
-}
-#media-wall-text {
-    color: rgb(0, 0, 0);
-    transition: font-size 0.5s ease;
-    font-weight: bold;
-}
-.menu-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    transition: all 0.5s ease;
-}
-.menu-item {
-    font-size: 18px;
-    margin: 0 25px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Wall</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            transition: background-color 1s ease, color 1s ease;
+        }
+        #video-container {
+            width: calc(100% - 40px);
+            margin: 0 auto;
+            padding-top: 20px;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        #header {
+            width: 100%;
+            padding: 20px;
+            background-color: transparent;
+            transition: all 1s ease;
+            box-sizing: border-box;
+        }
+        #media-wall-text {
+            transition: font-size 0.5s ease, color 1s ease;
+            font-weight: bold;
+        }
+        .menu-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            transition: all 0.5s ease;
+        }
+        .menu-item {
+            font-size: 18px;
+            margin: 0 25px;
+            transition: color 1s ease;
+        }
+        .fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            background-color: white;
+        }
+        .fixed #media-wall-text {
+            flex: 0 auto;
+            color: black;
+        }
+        .fixed .menu-container {
+            flex: auto;
+            justify-content: right;
+            margin-top: 0;
+        }
+        .fixed .menu-item {
+            color: black;
+        }
+        .scroll-message {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 1s ease, transform 1s ease;
+            text-align: center;
+            width: 80%;
+            color: black;
+        }
+        .falling-image {
+            position: fixed;
+            width: 150px; /* Adjust width to 150px */
+            opacity: 0;
+            transition: opacity 1s ease, top 5s ease; /* Adjust transition to slow falling */
+            z-index: 2000;
+        }
+        #center-text {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            font-weight: bold;
+            color: black;
+            opacity: 0;
+            transition: opacity 1s ease, transform 1s ease;
+            z-index: 2000;
+        }
+        .bottom-images-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 1s ease;
+            z-index: 2000;
+        }
+        .bottom-image {
+            max-width: 20%;
+            height: auto;
+            transition: all 0.3s ease;
+        }
+        .bottom-image:hover {
+            transform: scale(1.1);
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-20px) translateX(10px);
+            }
+            50% {
+                transform: translateY(-35px) translateX(-10px);
+            }
+            75% {
+                transform: translateY(-20px) translateX(15px);
+            }
+        }
+        .bubble {
+            position: fixed;
+            border-radius: 50%;
+            animation: float 10s infinite ease-in-out;
+            opacity: 0.7;
+            z-index: 1500;
+            transition: transform 0.5s ease;
+        }
+        a {color: white; text-decoration: none;}
+    </style>
 </head>
 <body>
-<div id="video-container">
-    <video src="img/comp.mp4" autoplay muted loop></video>
-</div>
-<div id="header">
-    <div id="media-wall-text">Media Wall</div>
-    <div class="menu-container">
-        <span class="menu-item">Main</span>
-        <span class="menu-item">Project Planning</span>
-        <span class="menu-item">Media Prototyping</span>
-        <span class="menu-item">Digital Content Production</span>
+    <div id="video-container">
+        <video src="img/comp.mp4" autoplay muted loop></video>
     </div>
-</div>
-<script>
-const header = document.getElementById('header');
-const text = document.getElementById('media-wall-text');
-const videoContainer = document.getElementById('video-container');
-let originalFontSize;
+    <div id="header">
+        <div id="media-wall-text">Media Wall</div>
+        <div class="menu-container">
+            <a href="index.html"> 
+            <span class="menu-item">Main</span> </a>
+            <span class="menu-item">Project Planning</span>
+            <span class="menu-item">Media Prototyping</span>
+            <span class="menu-item">Digital Content Production</span>
+        </div>
+    </div>
+    <div id="scroll-message-1" class="scroll-message">어린이 환자들을 위한 안정적인 바다 분위기의 영상을 만들자</div>
+    <div id="scroll-message-2" class="scroll-message">자신이 그린 그림이 나왔다는 착각을 불러일으켜 어린이들에게 자부심을 불러일으켜 아이들의 자아 개념과 자신감을 향상시키기</div>
+    <div id="center-text">바닷속 무지개</div>
+    <div class="bottom-images-container">
+        <img src="img/ccc.png" class="bottom-image">
+        <img src="img/cccc.png" class="bottom-image">
+        <img src="img/ccccc.png" class="bottom-image">
+    </div>
+   
+    <script>
+        const header = document.getElementById('header');
+        const text = document.getElementById('media-wall-text');
+        const videoContainer = document.getElementById('video-container');
+        const scrollMessage1 = document.getElementById('scroll-message-1');
+        const scrollMessage2 = document.getElementById('scroll-message-2');
+        const centerText = document.getElementById('center-text');
+        const bottomImagesContainer = document.querySelector('.bottom-images-container');
+        let originalFontSize;
+        let fallingImages = [];
+        let bubblesCreated = false;
+        let bubbles = [];
+        let lastScrollTop = 0;
 
-function initializeLayout() {
-    const availableWidth = header.offsetWidth - 40;
-    let fontSize = 1;
-    while (fontSize < 200) {
-        text.style.fontSize = fontSize + 'px';
-        if (text.offsetWidth > availableWidth) {
-            text.style.fontSize = (fontSize - 1) + 'px';
-            break;
+        function adjustTextSize(scrollRatio) {
+            const minFontSize = 30;
+            const maxFontSize = parseInt(originalFontSize);
+            const newSize = maxFontSize - (maxFontSize - minFontSize) * scrollRatio;
+            text.style.fontSize = newSize + 'px';
         }
-        fontSize++;
-    }
-    originalFontSize = text.style.fontSize;
-}
 
-window.addEventListener('resize', initializeLayout);
-window.addEventListener('load', initializeLayout);
-</script>
+        function adjustLayout() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollDistance = 200;
+            
+            const scrollRatio = Math.min(1, scrollTop / scrollDistance);
+            adjustTextSize(scrollRatio);
+
+            const videoBottom = videoContainer.offsetTop + videoContainer.offsetHeight;
+
+            if (scrollTop >= videoBottom) {
+                header.classList.add('fixed');
+                document.body.style.backgroundColor = 'white';
+                document.body.style.color = 'black';
+            } else {
+                header.classList.remove('fixed');
+                document.body.style.backgroundColor = 'black';
+                document.body.style.color = 'white';
+            }
+
+            if (scrollTop > videoBottom + 300 && scrollTop <= videoBottom + 600) {
+                scrollMessage1.style.opacity = '1';
+                scrollMessage1.style.transform = 'translate(-50%, -50%)';
+                if (!bubblesCreated) {
+                    createBubbles();
+                    bubblesCreated = true;
+                }
+            } else {
+                scrollMessage1.style.opacity = '0';
+                scrollMessage1.style.transform = 'translate(-50%, 50%)';
+            }
+
+            if (scrollTop > videoBottom + 600 && scrollTop <= videoBottom + 900) {
+                scrollMessage2.style.opacity = '1';
+                scrollMessage2.style.transform = 'translate(-50%, -50%)';
+            } else {
+                scrollMessage2.style.opacity = '0';
+                scrollMessage2.style.transform = 'translate(-50%, 50%)';
+            }
+
+            if (scrollTop > videoBottom + 900) {
+                dropImages();
+                centerText.style.opacity = '1';
+                centerText.style.transform = `translate(-50%, ${-50 - (scrollTop - (videoBottom + 900)) / 10}px)`;
+                bottomImagesContainer.style.opacity = '1';
+            } else {
+                centerText.style.opacity = '0';
+                bottomImagesContainer.style.opacity = '0';
+            }
+
+            lastScrollTop = scrollTop;
+        }
+
+        function createBubbles() {
+            for (let i = 0; i < 20; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                const size = Math.random() * 30 + 10;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${Math.random() * 100}%`;
+                bubble.style.bottom = `${Math.random() * 100}%`;
+                bubble.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                bubble.style.animationDelay = `${Math.random() * 5}s`;
+                
+                const hue = Math.floor(Math.random() * 360);
+                bubble.style.background = `hsla(${hue}, 100%, 50%, 0.3)`;
+                
+                document.body.appendChild(bubble);
+                bubbles.push(bubble);
+            }
+        }
+
+        function dropImages() {
+            if (fallingImages.length === 7) return;
+
+            const img = document.createElement('img');
+            img.src = `img/${11 + fallingImages.length}.png`;
+            img.className = 'falling-image';
+            img.style.left = `${Math.random() * (window.innerWidth - 150)}px`; // Adjust width accordingly
+            img.style.opacity = '1';
+            img.style.top = '0'; // Start from the top
+            document.body.appendChild(img);
+
+            setTimeout(() => {
+                img.style.top = `${window.innerHeight}px`; // Move image to the bottom of the window
+            }, 100);
+
+            fallingImages.push(img);
+
+            if (fallingImages.length < 7) {
+                setTimeout(dropImages, 1000); // Adjust timing for slower falling
+            }
+        }
+
+        function initializeLayout() {
+            const availableWidth = header.offsetWidth - 40;
+            let fontSize = 1;
+            
+            while (fontSize < 200) {
+                text.style.fontSize = fontSize + 'px';
+                if (text.offsetWidth > availableWidth) {
+                    text.style.fontSize = (fontSize - 1) + 'px';
+                    break;
+                }
+                fontSize++;
+            }
+            originalFontSize = text.style.fontSize;
+
+            const videoBottom = videoContainer.offsetTop + videoContainer.offsetHeight;
+            const maxScroll = videoBottom + 2000;
+            document.body.style.height = `${maxScroll}px`;
+        }
+
+        window.addEventListener('scroll', adjustLayout);
+        window.addEventListener('resize', () => {
+            initializeLayout();
+            adjustLayout();
+        });
+        window.addEventListener('load', () => {
+            initializeLayout();
+            adjustLayout();
+        });
+    </script>
 </body>
 </html>
+
+
