@@ -1,161 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Media Wall</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 200%;
-            overflow-x: hidden;
-            font-family: Arial, sans-serif;
-        }
-        #video-container {
-            width: calc(100% - 40px);
-            margin: 0 auto;
-            padding-top: 20px;
-        }
-        video {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        #header {
-            width: calc(100% - 40px);
-           
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            transition: all 0.5s ease;
-            box-sizing: border-box;
-        }
-        #media-wall-text {
-            color: rgb(0, 0, 0);
-            transition: font-size 0.5s ease;
-            
-            font-weight: bold;
-        }
-        .menu-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-            transition: all 0.5s ease;
-        }
-        .menu-item {
-    font-size: 18px;
-    margin: 0 25px; /* Increased spacing */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media Wall</title>
+<style>
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* 변경: 100vh로 설정 */
+    overflow: hidden; /* 변경: hidden으로 설정하여 스크롤 방지 */
+    font-family: Arial, sans-serif;
 }
-            
-        
-        .fixed {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-        }
-        .fixed #media-wall-text {
-            flex: 0  auto;
-           
-        }
-        .fixed .menu-container {
-            flex:auto;
-            justify-content: right;
-            margin-top: 0;
-            
-        }
-        #scroll-message {
-            position: absolute;
-            top: 200%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 24px;
-            font-weight: bold;
-            color: black;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
-    </style>
+#video-container {
+    width: calc(100% - 40px);
+    margin: 0 auto;
+    padding-top: 20px;
+}
+video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+#header {
+    width: calc(100% - 40px);
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: all 0.5s ease;
+    box-sizing: border-box;
+}
+#media-wall-text {
+    color: rgb(0, 0, 0);
+    transition: font-size 0.5s ease;
+    font-weight: bold;
+}
+.menu-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    transition: all 0.5s ease;
+}
+.menu-item {
+    font-size: 18px;
+    margin: 0 25px;
+}
+</style>
 </head>
 <body>
-    <div id="video-container">
-        <video src="img/comp.mp4" autoplay muted loop></video>
+<div id="video-container">
+    <video src="img/comp.mp4" autoplay muted loop></video>
+</div>
+<div id="header">
+    <div id="media-wall-text">Media Wall</div>
+    <div class="menu-container">
+        <span class="menu-item">Main</span>
+        <span class="menu-item">Project Planning</span>
+        <span class="menu-item">Media Prototyping</span>
+        <span class="menu-item">Digital Content Production</span>
     </div>
-    <div id="header">
-        <div id="media-wall-text">Media Wall</div>
-        <div class="menu-container">
-            <span class="menu-item">Main</span>
-            <span class="menu-item">Project Planning</span>
-            <span class="menu-item">Media Prototyping</span>
-            <span class="menu-item">Digital Content Production</span>
-        </div>
-    </div>
-    <div id="scroll-message">어린이 환자들을 위한 안정적인 바다 분위기의 영상을 만들자</div>
-   
-    <script>
-        const header = document.getElementById('header');
-        const text = document.getElementById('media-wall-text');
-        const videoContainer = document.getElementById('video-container');
-        const scrollMessage = document.getElementById('scroll-message');
-        let originalFontSize;
+</div>
+<script>
+const header = document.getElementById('header');
+const text = document.getElementById('media-wall-text');
+const videoContainer = document.getElementById('video-container');
+let originalFontSize;
 
-        function adjustTextSize(scrollRatio) {
-            const minFontSize = 30; // 최소 폰트 크기 (픽셀)
-            const maxFontSize = parseInt(originalFontSize); // 최대 폰트 크기
-            const newSize = maxFontSize - (maxFontSize - minFontSize) * scrollRatio;
-            text.style.fontSize = newSize + 'px';
+function initializeLayout() {
+    const availableWidth = header.offsetWidth - 40;
+    let fontSize = 1;
+    while (fontSize < 200) {
+        text.style.fontSize = fontSize + 'px';
+        if (text.offsetWidth > availableWidth) {
+            text.style.fontSize = (fontSize - 1) + 'px';
+            break;
         }
+        fontSize++;
+    }
+    originalFontSize = text.style.fontSize;
+}
 
-        function adjustLayout() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const scrollDistance = 200; // 스크롤 전환 거리
-            
-            const scrollRatio = Math.min(1, scrollTop / scrollDistance);
-            adjustTextSize(scrollRatio);
-
-            const videoBottom = videoContainer.offsetTop + videoContainer.offsetHeight;
-            if (scrollTop >= videoBottom) {
-                header.classList.add('fixed');
-            } else {
-                header.classList.remove('fixed');
-            }
-
-            if (scrollTop > videoBottom + 300) {
-                scrollMessage.style.opacity = '1';
-            } else {
-                scrollMessage.style.opacity = '0';
-            }
-        }
-
-        function initializeLayout() {
-            const availableWidth = header.offsetWidth - 40; // 좌우 20px 여백
-            let fontSize = 1;
-            
-            while (fontSize < 200) {
-                text.style.fontSize = fontSize + 'px';
-                if (text.offsetWidth > availableWidth) {
-                    text.style.fontSize = (fontSize - 1) + 'px';
-                    break;
-                }
-                fontSize++;
-            }
-            originalFontSize = text.style.fontSize;
-        }
-
-        window.addEventListener('scroll', adjustLayout);
-        window.addEventListener('resize', () => {
-            initializeLayout();
-            adjustLayout();
-        });
-        window.addEventListener('load', () => {
-            initializeLayout();
-            adjustLayout();
-        });
-    </script>
+window.addEventListener('resize', initializeLayout);
+window.addEventListener('load', initializeLayout);
+</script>
 </body>
 </html>
-
